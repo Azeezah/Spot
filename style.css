@@ -1,0 +1,14 @@
+/* Enable click through for transparent window.
+
+body { pointer-events: none; }
+* { pointer-events: all; }
+.draggable { -webkit-app-region: drag; }
+
+*/
+
+h1 {
+  font-family: sans-serif;
+  color: green;
+}
+
+

@@ -1,16 +1,28 @@
+// Todo: make window click through with snippet from https://github.com/electron/electron/issues/1335#issuecomment-571066967
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, screen} = require('electron')
 const path = require('path')
 
 function createWindow () {
+  let display = screen.getPrimaryDisplay();
+  let width = display.bounds.width;
+  let height = display.bounds.height;
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: width,
+    height: 200,
+    x: 0,
+    y: height - 200,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+    },
+    transparent: true,
+    frame: false,
   })
+
+  mainWindow.setAlwaysOnTop(true, 'screen');
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -24,7 +36,7 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
