@@ -1,5 +1,4 @@
-def takeScreenshot():
-    pass
+from screenshot import takeScreenshot
 
 def triggerLogin():
     '''Trigger Auth0 and collect email address.'''
