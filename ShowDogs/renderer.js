@@ -11,13 +11,25 @@ const start = Date.now();  // timestamp in ms
 const ms_to_cross_screen = 5000;
 const fps = 60;
 const ms_per_frame = 1000/fps;
+const footsteps_to_cross_screen = 1;
+
+const gait = ['dog.png', 'dog2.png'];
+dog.src = gait[1];
+
 var interval;
 
 interval = setInterval(() => {
-  let x = screen.width * (Date.now() - start) / ms_to_cross_screen;
-  dog.style.left = x + 'px';
+  let fractionTimeElapsed = (Date.now() - start) / ms_to_cross_screen;
+  let stepsElapsed = Math.floor(footsteps_to_cross_screen * fractionTimeElapsed);
 
-  if (x > screen.width) {
+  let gait_cycle_index = Math.floor((fractionTimeElapsed - stepsElapsed / footsteps_to_cross_screen) * gait.length);
+
+  dog.style.left = screen.width * fractionTimeElapsed + 'px';
+
+  render_gait(gait_cycle_index);
+
+  if (fractionTimeElapsed > 1) {
     clearInterval(interval);
+    console.log('cleared interval');
   }
 }, ms_per_frame);
