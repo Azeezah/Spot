@@ -10,10 +10,14 @@ body {
   overflow: hidden;
 }
 
-img {
-  height: 200px;
-}
-
 #dog {
   position: absolute;
+}
+
+#dog > img {
+  position: inherit;
+  left: inherit;
+  top: 0px;
+  height: 200px;
+  transform: scaleX(-1); /* Flip image. */
 }

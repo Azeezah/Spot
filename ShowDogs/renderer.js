@@ -6,18 +6,24 @@
 // process.
 
 var dog = document.getElementById('dog');
+var imgs = document.querySelectorAll('#dog > img');
 
 const start = Date.now();  // timestamp in ms
-const ms_to_cross_screen = 5000;
+const ms_to_cross_screen = 10000;
 const fps = 60;
 const ms_per_frame = 1000/fps;
-var interval;
+const footsteps_per_sec = 15;
 
-interval = setInterval(() => {
-  let x = screen.width * (Date.now() - start) / ms_to_cross_screen;
-  dog.style.left = x + 'px';
+var interval = setInterval(() => {
+  let ms_elapsed = (Date.now() - start);
+  let x_coord = screen.width * ms_elapsed / ms_to_cross_screen;
+  dog.style.left = x_coord + 'px';
 
-  if (x > screen.width) {
+  for (let img of imgs) { img.style.visibility = "hidden"; }
+  let i = Math.floor((footsteps_per_sec * ms_elapsed / 1000) % imgs.length);
+  imgs[i].style.visibility = "visible";
+
+  if (ms_elapsed > ms_to_cross_screen) {
     clearInterval(interval);
   }
 }, ms_per_frame);
