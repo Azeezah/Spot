@@ -1,10 +1,12 @@
 import cv2 as cv
 import pyautogui
 import numpy as np
+from keras.models import load_model
 
 t1 = 50
 t2 = 150
 areaMin = 2000
+model = load_model('model.h5')
 
 class Rectangle:
     def __init__(self, x, y, w, h):
@@ -86,8 +88,9 @@ def isThereADogOnScreen():
 
     i = 0
     for rectangle in rectangles:
-        cv.imshow(f'{i}', crop(screenshot_cv, rectangle))
-        i += 1
+        if model.predict(cv.resize(crop(screenshot_cv, rectangle), dsize=(128, 128), interpolation=cv.INTER_CUBIC)) > 0.5:
+            cv.imshow(crop(screenshot_cv, rectangle))
+            i += 1
 
     while True:
         if cv.waitKey(1) & 0xFF == ord('q'):
